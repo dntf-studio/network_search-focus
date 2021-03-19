@@ -1,0 +1,13 @@
+E:\C#-apps\focus\focus\bin\Debug\netcoreapp3.1\focus.exe
+E:\C#-apps\focus\focus\bin\Debug\netcoreapp3.1\focus.deps.json
+E:\C#-apps\focus\focus\bin\Debug\netcoreapp3.1\focus.runtimeconfig.json
+E:\C#-apps\focus\focus\bin\Debug\netcoreapp3.1\focus.runtimeconfig.dev.json
+E:\C#-apps\focus\focus\bin\Debug\netcoreapp3.1\focus.dll
+E:\C#-apps\focus\focus\bin\Debug\netcoreapp3.1\focus.pdb
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.csprojAssemblyReference.cache
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.AssemblyInfoInputs.cache
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.AssemblyInfo.cs
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.csproj.CoreCompileInputs.cache
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.dll
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.pdb
+E:\C#-apps\focus\focus\obj\Debug\netcoreapp3.1\focus.genruntimeconfig.cache
