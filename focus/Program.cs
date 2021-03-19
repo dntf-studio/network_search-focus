@@ -12,6 +12,7 @@ namespace focus
     {
         static void Main(string[] args)
         {
+            Console.Title = "focus";
             string server = null;
             server = Dns.GetHostName();
             float version = 0.5f;
@@ -64,6 +65,15 @@ namespace focus
                     case "/exit":
                         Environment.Exit(0);
                         break;
+                    case "/green":
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        break;
+                    case "/black":
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        break;
+
                 }
             }
         
@@ -117,6 +127,14 @@ namespace focus
                         isWaitingCommand_debug = true;
                         goto isWaiting_gt;
                         break;
+                    case "/green":
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        break;
+                    case "/black":
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        break;
                 }
             }
             while (isWaitingCommand_debug)
@@ -145,7 +163,6 @@ namespace focus
                         isHelping = true;
                         mode = "HELP";
                         break;
-
                 }
             }
             string server_hs = null;
@@ -265,11 +282,14 @@ namespace focus
                 Console.WriteLine("                                                         MODE = [" + mode + "]");
                 Console.WriteLine("                                                         VERSION = [" + version + "]");
                 Console.WriteLine("-----------------------------------------------------------------------------------------------------");
-                Console.WriteLine("  [Commands]");
+                Console.WriteLine("  [Commands]  #Basicaliy you mustn't type these commands except START mode");
                 Console.WriteLine("   +/help  --> open information(this)");
                 Console.WriteLine("   +/search --> Enter hostname to know IPAddress");
                 Console.WriteLine("       --> +/ping --> Enter IPAddress ");
                 Console.WriteLine("   +/ok --> back to START mode");
+                Console.WriteLine("   +/green --> change console.color to green");
+                Console.WriteLine("   +/black --> change console color to black");
+                Console.WriteLine("   +/exit --> close the app");
                 var read = Console.ReadLine();
                 switch (read)
                 {
