@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace focus
 {
@@ -18,6 +19,8 @@ namespace focus
             var isWaitingCommand_debug = true;
             var isSearching = false;
             var isResult = false;
+            var isSpeed = false;
+            var isResult_of_ping = false;
             var networkAvailable = NetworkInterface.GetIsNetworkAvailable();
             var IsAvaiable = false; 
             if (!networkAvailable)
@@ -27,6 +30,8 @@ namespace focus
             {
                 IsAvaiable = true;
             }
+            string address = null;
+
         isWaiting_gt: while (isWaitingCommand_debug)
             {
                 server = Dns.GetHostName();
@@ -49,6 +54,53 @@ namespace focus
                         isWaitingCommand_debug = false;
                         isSearching = true;
                         mode = "SEARCH";
+                        break;
+                }
+            }
+        
+
+        isResultOfPing: while (isResult_of_ping)
+            {
+                try
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Ping sender = new Ping();
+                        PingReply reply = sender.Send(address);
+                        if (reply.Status == IPStatus.Success)
+                        {
+                            Console.WriteLine("Reply from {0}: bytes = {1} time{2}ms TTL ={3}",
+                                reply.Address,
+                                reply.Buffer.Length,
+                                reply.RoundtripTime,
+                                reply.Options.Ttl);
+                        }
+                        else
+                        {
+                            Console.WriteLine(reply.Status);
+                        }
+
+                        if (i < 3)
+                        {
+                            Thread.Sleep(1000);
+                            if(i >= 3)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(">>Exception : " + e.ToString());
+                }
+                var read = Console.ReadLine();
+                switch (read)
+                {
+                    case "ok":
+                        isResult_of_ping = false;
+                        isWaitingCommand_debug = true;
+                        goto isWaiting_gt;
                         break;
                 }
             }
@@ -116,7 +168,6 @@ namespace focus
                     }
                 }
             }
-
             while (isResult)
             {
                 try
@@ -140,6 +191,10 @@ namespace focus
                             isResult = false;
                             goto isWaiting_gt;
                             break;
+                        case "ping":
+                            isResult = false;
+                            isSpeed = true;
+                            break;
                     }
                 }
                 catch (Exception e)
@@ -148,6 +203,39 @@ namespace focus
                     server = null;
                 }
             }
+
+            while (isSpeed)
+            {
+                try
+                {
+                    Console.Clear();
+                    writeTitle();
+                    Console.WriteLine("                                                         MODE = [" + mode + "]");
+                    Console.WriteLine("                                                         VERSION = [" + version + "]");
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("                                                         NETWORK = [" + IsAvaiable + "]");
+                    //InterfaceSpeedAgent();
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("                                                        HOSTNAME = [" + server + "]");
+                    getIPAddress(server);
+                    IPAdressAdditionalInfo();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(">>Exception:" + e.ToString());
+                    server = null;
+                }
+                Console.WriteLine(">>Enter IPAdress");
+
+                var read = Console.ReadLine();
+                if(read != "")
+                {
+                    address = read;
+                    isSpeed = false;
+                    isResult_of_ping = true;
+                    goto isResultOfPing;
+                }
+            }       
         }
 
         static void writeTitle()
