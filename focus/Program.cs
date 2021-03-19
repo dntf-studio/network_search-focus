@@ -14,13 +14,14 @@ namespace focus
         {
             string server = null;
             server = Dns.GetHostName();
-            float version = 0.1f;
-            var mode = "DEBUG";
+            float version = 0.5f;
+            var mode = "START";
             var isWaitingCommand_debug = true;
             var isSearching = false;
             var isResult = false;
             var isSpeed = false;
             var isResult_of_ping = false;
+            var isHelping = false;
             var networkAvailable = NetworkInterface.GetIsNetworkAvailable();
             var IsAvaiable = false; 
             if (!networkAvailable)
@@ -35,7 +36,7 @@ namespace focus
         isWaiting_gt: while (isWaitingCommand_debug)
             {
                 server = Dns.GetHostName();
-                mode = "DEBUG";
+                mode = "START";
                 Console.Clear();
                 writeTitle();
                 Console.WriteLine("                                                         MODE = [" + mode + "]");
@@ -50,10 +51,18 @@ namespace focus
                 var read = Console.ReadLine();
                 switch (read)
                 {
-                    case "search":
+                    case "/search":
                         isWaitingCommand_debug = false;
                         isSearching = true;
                         mode = "SEARCH";
+                        break;
+                    case "/help":
+                        isWaitingCommand_debug = false;
+                        isHelping = true;
+                        mode = "HELP";
+                        break;
+                    case "/exit":
+                        Environment.Exit(0);
                         break;
                 }
             }
@@ -69,11 +78,17 @@ namespace focus
                         PingReply reply = sender.Send(address);
                         if (reply.Status == IPStatus.Success)
                         {
-                            Console.WriteLine("Reply from {0}: bytes = {1} time{2}ms TTL ={3}",
-                                reply.Address,
-                                reply.Buffer.Length,
-                                reply.RoundtripTime,
-                                reply.Options.Ttl);
+                            try
+                            {
+                                Console.WriteLine("Reply from {0}: bytes = {1} time{2}ms TTL ={3}",
+                                    reply.Address,
+                                    reply.Buffer.Length,
+                                    reply.RoundtripTime,
+                                    reply.Options.Ttl);
+                            }catch(Exception e)
+                            {
+                                Console.WriteLine("Exception :"+e.ToString());
+                            }
                         }
                         else
                         {
@@ -97,7 +112,7 @@ namespace focus
                 var read = Console.ReadLine();
                 switch (read)
                 {
-                    case "ok":
+                    case "/ok":
                         isResult_of_ping = false;
                         isWaitingCommand_debug = true;
                         goto isWaiting_gt;
@@ -120,11 +135,17 @@ namespace focus
                 var read = Console.ReadLine();
                 switch (read)
                 {
-                    case "search":
+                    case "/search":
                         isWaitingCommand_debug = false;
                         isSearching = true;
                         mode = "SEARCH";
                         break;
+                    case "/help":
+                        isWaitingCommand_debug = false;
+                        isHelping = true;
+                        mode = "HELP";
+                        break;
+
                 }
             }
             string server_hs = null;
@@ -186,12 +207,12 @@ namespace focus
                     var read = Console.ReadLine();
                     switch (read)
                     {
-                        case "ok":
+                        case "/ok":
                             isWaitingCommand_debug = true;
                             isResult = false;
                             goto isWaiting_gt;
                             break;
-                        case "ping":
+                        case "/ping":
                             isResult = false;
                             isSpeed = true;
                             break;
@@ -235,7 +256,30 @@ namespace focus
                     isResult_of_ping = true;
                     goto isResultOfPing;
                 }
-            }       
+            }
+
+            while (isHelping)
+            {
+                Console.Clear();
+                writeTitle();
+                Console.WriteLine("                                                         MODE = [" + mode + "]");
+                Console.WriteLine("                                                         VERSION = [" + version + "]");
+                Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+                Console.WriteLine("  [Commands]");
+                Console.WriteLine("   +/help  --> open information(this)");
+                Console.WriteLine("   +/search --> Enter hostname to know IPAddress");
+                Console.WriteLine("       --> +/ping --> Enter IPAddress ");
+                Console.WriteLine("   +/ok --> back to START mode");
+                var read = Console.ReadLine();
+                switch (read)
+                {
+                    case "/ok":
+                        isHelping = false;
+                        isWaitingCommand_debug = true;
+                        goto isWaiting_gt;
+                        break;
+                }
+            }
         }
 
         static void writeTitle()
