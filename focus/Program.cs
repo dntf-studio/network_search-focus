@@ -27,6 +27,31 @@ namespace focus
             {
                 IsAvaiable = true;
             }
+        isWaiting_gt: while (isWaitingCommand_debug)
+            {
+                server = Dns.GetHostName();
+                mode = "DEBUG";
+                Console.Clear();
+                writeTitle();
+                Console.WriteLine("                                                         MODE = [" + mode + "]");
+                Console.WriteLine("                                                         VERSION = [" + version + "]");
+                Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                         NETWORK = [" + IsAvaiable + "]");
+                InterfaceSpeedAgent();
+                Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+                Console.WriteLine("                                                        HOSTNAME = [" + server + "]");
+                getIPAddress(server);
+                IPAdressAdditionalInfo();
+                var read = Console.ReadLine();
+                switch (read)
+                {
+                    case "search":
+                        isWaitingCommand_debug = false;
+                        isSearching = true;
+                        mode = "SEARCH";
+                        break;
+                }
+            }
             while (isWaitingCommand_debug)
             {
                 Console.Clear();
@@ -91,30 +116,7 @@ namespace focus
                     }
                 }
             }
-        isWaiting_gt: while (isWaitingCommand_debug)
-            {
-                server = Dns.GetHostName();
-                Console.Clear();
-                writeTitle();
-                Console.WriteLine("                                                         MODE = [" + mode + "]");
-                Console.WriteLine("                                                         VERSION = [" + version + "]");
-                Console.WriteLine("-----------------------------------------------------------------------------------------------------");
-                Console.WriteLine("                                                         NETWORK = [" + IsAvaiable + "]");
-                InterfaceSpeedAgent();
-                Console.WriteLine("-----------------------------------------------------------------------------------------------------");
-                Console.WriteLine("                                                        HOSTNAME = [" + server + "]");
-                getIPAddress(server);
-                IPAdressAdditionalInfo();
-                var read = Console.ReadLine();
-                switch (read)
-                {
-                    case "search":
-                        isWaitingCommand_debug = false;
-                        isSearching = true;
-                        mode = "SEARCH";
-                        break;
-                }
-            }
+
             while (isResult)
             {
                 try
